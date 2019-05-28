@@ -1,0 +1,15 @@
+{
+    "parameterSets": {
+        "text": {
+            "$bottom": "51",
+            "$linespace": "-20",
+            "$rotation": "90",
+            "$text1": "sausages",
+            "$text1size": "20",
+            "$text2": "cunt",
+            "$text2size": "23"
+        }
+    },
+    "parameterSets": "",
+    "fileFormatVersion": "1"
+}
