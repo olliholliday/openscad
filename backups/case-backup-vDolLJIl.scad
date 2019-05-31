@@ -3,7 +3,7 @@ $fa=$preview ? 6 : 3;
 
 // proportions of case
 $caseback=1;
-$caseedge=1;
+$caseedge=1.2;
 
 // the overall bounding box of the phone and screen as measured with calipers
 $width=66.99;
