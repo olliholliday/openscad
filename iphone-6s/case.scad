@@ -1,9 +1,9 @@
-$fs=$preview ? 2 : 0.2;
-$fa=$preview ? 6 : 3;
+$fs=$preview ? 2 : 0.6;
+$fa=$preview ? 6 : 6;
 
 // proportions of case
-$caseback=1;
-$caseedge=1;
+$caseback=0.9;
+$caseedge=1.4;
 
 // the overall bounding box of the phone and screen as measured with calipers
 $width=66.99;
@@ -88,7 +88,7 @@ module iphone6s() {
     };
 }
 // sanity check
-if ($preview) #translate([0,0,-40]) iphone6s();
+if ($preview) translate([0,0,-40]) iphone6s();
 
 if ($preview) {
     translate([0,0,-30]) {
@@ -127,7 +127,7 @@ if ($preview) {
         }
         
         // camera cutout
-        translate([$width/2-$camerapositionw, $height/2-$camerapositionh, -$depth/2]) hull(){
+        color("silver") translate([$width/2-$camerapositionw, $height/2-$camerapositionh, -$depth/2]) hull(){
             cylinder(r=$cameraradius, h=$powerbuttondepth, center=true);
             translate([-$camerastretch,0, 0]) cylinder(r=$cameraradius, h=$powerbuttondepth, center=true);
         }
@@ -142,19 +142,19 @@ $casedepth = $depth + $caseback;
 module case() {
     difference() {
         roundedbox($casewidth, $caseheight, $casedepth, $casedepth/2, $hradius+$caseedge);
-        //translate([0,0,($casedepth-($depth-$screendepth))/2]) iphone6s();        
-        
-        translate([0,0,($casedepth-($depth-$screendepth))/2]) {
+       
+        translate([0,0,($casedepth-$depth)/2]) {
             
             intersection() {
                 iphone6sbody();
                 translate([0,0,-$screendepth]) cube([$width, $height, $depth], center=true);
             };
             // get screen notched area only by subtracting the other part and resizing it to screen dimensions
-            
-            #translate([0,0,-15]) resize([$screenwidth,$screenheight,5]) intersection() {
-                iphone6sbody();
-                translate([0,0,($depth/2)-$screendepth]) cube([$width, $height, $screendepth], center=true);
+            translate([0,0,-13]) {
+                resize([$screenwidth,$screenheight,5]) intersection() {
+                    iphone6sbody();
+                    translate([0,0,($depth/2)-$screendepth]) cube([$width, $height, $screendepth], center=true);
+                }
             };
             
             
@@ -205,4 +205,3 @@ module case() {
 
 case();
 
-#translate([0,0,($casedepth-($depth-$screendepth))/2]) iphone6s();
