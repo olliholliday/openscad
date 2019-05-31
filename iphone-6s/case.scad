@@ -46,22 +46,25 @@ module bbox() {
 if ($preview) translate([0,0,-60]) bbox();
 
 
-// a rounded box with specified outer dimensions, and with rounded vertical and horizontal chamfers
+// a rounded box with specified outer dimensions, and with specified vertical and horizontal semicircular chamfers
 module roundedbox(width, height, depth, vradius, hradius) {
-    // a rounder corner with different horizontal end vertical diameters
+    // a rounded corner with different horizontal and vertical diameters
     module corner() {
-        // extrude the corner circle around the horizontal profile radius
+        // create a vradius circle and extrude it around hradius
         rotate_extrude(convexity=1)
-            translate([hradius-vradius, 0, 0])
-                circle(r=vradius);
+            translate([hradius-vradius, 0, 0]) circle(r=vradius);
     };
+    
+    // position the centre of each corner so that we get the total dimensions after hulling
+    innerWidth = width / 2 - hradius;
+    innerHeight = height / 2 -hradius;
     
     // the total hull encompassing the four corners
     hull() {
-        translate([+(width/2-hradius), +(height/2-hradius), 0]) corner();
-        translate([-(width/2-hradius), +(height/2-hradius), 0]) corner();
-        translate([+(width/2-hradius), -(height/2-hradius), 0]) corner();
-        translate([-(width/2-hradius), -(height/2-hradius), 0]) corner();
+        translate([+innerWidth, +innerHeight, 0]) corner();
+        translate([-innerWidth, +innerHeight, 0]) corner();
+        translate([+innerWidth, -innerHeight, 0]) corner();
+        translate([-innerWidth, -innerHeight, 0]) corner();
     };
 }
 
