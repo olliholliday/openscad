@@ -1,3 +1,4 @@
+$thickness=1.4;
 $bottom=45;
 $rotation=-90;
 $text1size=10;
@@ -28,7 +29,7 @@ difference() {
         //case
         color("green") minkowski() {
             samsung();
-            sphere(r=0.8);
+            sphere(r=$thickness);
         }
 //        //volume buttons
 //        translate([106.5,65,4.5]) color("blue") minkowski() {
@@ -49,20 +50,26 @@ difference() {
     union() {
         // inside
         samsung();
+
         // screen opening
         translate([1.7,1.7,5]) scale([.975,.95,1]) samsung();
+
         // headphone opening
-        rotate([0,90,0]) translate([-4.3,48.5,0]) cylinder(r=3.2,h=20,$fn=20, center=true);
+        rotate([0,90,0]) translate([-4.3,48.5,0]) color("red") 
+            cylinder(r=3.2,h=20,$fn=20, center=true);
+
         // charger opening
         translate([-10,32,4.4]) color("red") minkowski() {
             cube([10,12,4.5], center=true);
             sphere(r=0.7,$fn=20);
         }
+
         // speaker opening
         translate([-10,15.2,4]) color("red") minkowski() {
             cube([7,11,3], center=true);
             sphere(r=0.6,$fn=20);
         }
+
         // volume buttons inner
         translate([106.5,70.4,4.9]) color("blue") minkowski() {
             cube([10,5,2], center=true);
@@ -80,7 +87,9 @@ difference() {
         }   
 
         // top mic opening
-        rotate([0,90,0]) translate([-5.4,20.8,135]) cylinder(r=1.5,h=20,$fn=10, center=true);    
+        rotate([0,90,0]) translate([-5.4,20.8,136]) color("orange")
+            sphere(r=1.5,$fn=15);
+        
         // camera opening
         translate([110.5,37.5,-5]) color("yellow") minkowski() {
             cube([10,21,10], center=true);
