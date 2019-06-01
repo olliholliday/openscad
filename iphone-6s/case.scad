@@ -19,7 +19,7 @@ $screendepth=0.8;
 
 $buttondepth=1;
 
-$powerbuttonlength=10;
+$powerbuttonlength=9;
 $powerbuttonradius=1;
 $powerbuttonfromcentre=30;
 
@@ -28,7 +28,7 @@ $volclusterlength=32;
 
 $bottomcutoutfromcentre=12;
 $bottomcutoutlength=12;
-$bottomcutoutradius=0.5;
+$bottomcutoutradius=0.6;
 
 $powerlength=3;
 $powerradius=1;
