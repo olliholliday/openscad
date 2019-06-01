@@ -100,7 +100,7 @@ module buttons(
     width = $width, height = $height, depth = $depth,
     buttonradius = $buttonradius, buttondepth = $buttondepth,
     powerbuttonfromcentre = $powerbuttonfromcentre, powerbuttonlength = $powerbuttonlength, powerbuttonvshift = 0,
-    volclusterfromcentre = $volclusterfromcentre, volclusterlength = $volclusterlength, volclustervshift = 0
+    volclusterfromcentre = $volclusterfromcentre, volclusterlength = $volclusterlength, volclustervshift = 0,
     bottomcutoutradius = $bottomcutoutradius, bottomcutoutfromcentre = $bottomcutoutfromcentre, bottomcutoutlength = $bottomcutoutlength,
     powerradius = $powerradius, powerlength = $powerlength, powervshift = 0,
     cameraradius = $cameraradius, camerapositionw = $camerapositionw, camerapositionh = $camerapositionh, camerastretch = $camerastretch
@@ -176,7 +176,13 @@ module case() {
                     translate([0,0,($depth/2)-$screendepth]) cube([$width, $height, $screendepth], center=true);
                 }
             };
-            buttons(buttondepth = 10, buttonradius = 1.5, powerradius = 2.9, powervshift = 0.5, bottomcutoutradius = 0.8);
+            buttons(
+                buttondepth = 10, buttonradius = 2,
+                powerbuttonlength = $powerbuttonlength, powerbuttonvshift = 1,
+                volclusterlength = $volclusterlength, volclustervshift = 1,
+                powerradius = 2.9, powervshift = 0.5,
+                bottomcutoutradius = 0.8
+            );
         }
     }
 }
