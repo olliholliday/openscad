@@ -10,6 +10,7 @@ A pretty much finished Apple IPhone 6S case. Fits extremely snugly.
 
 It supports the 'customizer' features so you can open the model in OpenSCAD, edit your case thickness and choose the text to emboss on the back.
 
+![OpenSCAD Screenshot](https://raw.githubusercontent.com/olliholliday/openscad/master/iphone-6s/customiser.png)
 
 ## galaxy-s7
 
