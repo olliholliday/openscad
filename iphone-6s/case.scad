@@ -6,7 +6,7 @@ $caseedge=1.2;
 // Thickness of the text cutout. Will be all the way through if larger than the case back thickness.
 $textthickness = 0.4;
 // First line of text
-$text1="SV";
+$text1="";
 // Size of the first line of text
 $text1size=20;
 // Font for the first line of text
