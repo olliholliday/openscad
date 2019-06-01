@@ -55,11 +55,11 @@ module roundedbox(width, height, depth, vradius, hradius) {
         rotate_extrude(convexity=1)
             translate([hradius-vradius, 0, 0]) circle(r=vradius);
     };
-    
+
     // position the centre of each corner so that we get the total dimensions after hulling
     innerWidth = width / 2 - hradius;
     innerHeight = height / 2 -hradius;
-    
+
     // the total hull encompassing the four corners
     hull() {
         translate([+innerWidth, +innerHeight, 0]) corner();
@@ -95,31 +95,33 @@ module iphone6s() {
 if ($preview) translate([0,0,-40]) iphone6s();
 
 
+// the buttons / camera / power socket / speaker holes
 module buttons(
     width = $width, height = $height, depth = $depth,
     buttonradius = $buttonradius, buttondepth = $buttondepth,
-    powerbuttonfromcentre = $powerbuttonfromcentre, powerbuttonlength = $powerbuttonlength,
-    volclusterfromcentre = $volclusterfromcentre, volclusterlength = $volclusterlength,
+    powerbuttonfromcentre = $powerbuttonfromcentre, powerbuttonlength = $powerbuttonlength, powerbuttonvshift = 0,
+    volclusterfromcentre = $volclusterfromcentre, volclusterlength = $volclusterlength, volclustervshift = 0
     bottomcutoutradius = $bottomcutoutradius, bottomcutoutfromcentre = $bottomcutoutfromcentre, bottomcutoutlength = $bottomcutoutlength,
     powerradius = $powerradius, powerlength = $powerlength, powervshift = 0,
     cameraradius = $cameraradius, camerapositionw = $camerapositionw, camerapositionh = $camerapositionh, camerastretch = $camerastretch
 ) {
-    // volume cluster
-    color("silver") translate([-width/2, volclusterfromcentre, 0]) hull(){
-        rotate([0, 90, 0]){
-            cylinder(r=buttonradius, h=buttondepth, center=true);
-            translate([0, volclusterlength, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
-        }
-    }
 
     // power button
     color("silver") translate([width/2, powerbuttonfromcentre, 0]) hull(){
         rotate([0, 90, 0]){
-            cylinder(r=buttonradius, h=buttondepth, center=true);
-            translate([0, powerbuttonlength, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
+            translate([powerbuttonvshift, 0, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
+            translate([powerbuttonvshift, powerbuttonlength, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
         }
     }
-    
+
+    // volume cluster
+    color("silver") translate([-width/2, volclusterfromcentre, 0]) hull(){
+        rotate([0, 90, 0]){
+            translate([volclustervshift, 0, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
+            translate([volclustervshift, volclusterlength, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
+        }
+    }
+
     // bottom long cutout left
     color("black") hull(){
         rotate([90, 90, 0]){
@@ -127,7 +129,7 @@ module buttons(
             translate([0, -bottomcutoutlength-bottomcutoutfromcentre, height/2]) cylinder(r=bottomcutoutradius, h=buttondepth, center=true);
         }
     }
-    
+
     // bottom long cutout right
     color("black") hull(){
         rotate([90, 90, 0]){
@@ -135,7 +137,7 @@ module buttons(
             translate([0, bottomcutoutlength+bottomcutoutfromcentre, height/2]) cylinder(r=bottomcutoutradius, h=buttondepth, center=true);
         }
     }
-    
+
     // power cutout
     color("black") hull(){
         rotate([90, 90, 0]){
@@ -143,7 +145,7 @@ module buttons(
             translate([powervshift, powerlength, height/2]) cylinder(r=powerradius, h=buttondepth, center=true);
         }
     }
-    
+
     // camera cutout
     color("silver") translate([width/2-camerapositionw, height/2-camerapositionh, -depth/2]) hull(){
         cylinder(r=cameraradius, h=buttondepth, center=true);
@@ -154,7 +156,6 @@ module buttons(
 if ($preview) translate([0,0,-30]) { iphone6s(); buttons(); }
 
 
-
 $casewidth = $width + $caseedge*2;
 $caseheight = $height + $caseedge*2;
 $casedepth = $depth + $caseback;
@@ -162,7 +163,7 @@ $casedepth = $depth + $caseback;
 module case() {
     difference() {
         roundedbox($casewidth, $caseheight, $casedepth, $casedepth/2, $hradius+$caseedge);
-       
+
         translate([0,0,($casedepth-$depth)/2]) {
 
             // subtract the phone
@@ -179,6 +180,4 @@ module case() {
         }
     }
 }
-
 case();
-
