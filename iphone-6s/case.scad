@@ -18,9 +18,9 @@ $screenheight=135.22;
 $screendepth=0.8;
 
 $buttondepth=1;
+$buttonradius=1;
 
 $powerbuttonlength=9;
-$powerbuttonradius=1;
 $powerbuttonfromcentre=30;
 
 $volclusterfromcentre=18;
@@ -94,57 +94,65 @@ module iphone6s() {
 // sanity check
 if ($preview) translate([0,0,-40]) iphone6s();
 
-if ($preview) {
-    translate([0,0,-30]) {
-        iphone6s();
-        
-        // volume cluster
-        color("silver") translate([-$width/2, $volclusterfromcentre, 0]) hull(){
-            rotate([0, 90, 0]){
-                cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-                translate([0, $volclusterlength, 0]) cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-            }
-        }
-    
-        // power button
-        color("silver") translate([$width/2, $powerbuttonfromcentre, 0]) hull(){
-            rotate([0, 90, 0]){
-                cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-                translate([0, $powerbuttonlength, 0]) cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-            }
-        }
-        
-        // bottom long cutout left
-        color("black") hull(){
-            rotate([90, 90, 0]){
-                translate([0, -$bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-                translate([0, -$bottomcutoutlength-$bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-            }
-        }
-        
-        // bottom long cutout right
-        color("black") hull(){
-            rotate([90, 90, 0]){
-                translate([0, $bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-                translate([0, $bottomcutoutlength+$bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-            }
-        }
-        
-        // power cutout
-        color("black") hull(){
-            rotate([90, 90, 0]){
-                translate([0, -$powerlength, $height/2]) cylinder(r=$powerradius, h=$buttondepth, center=true);
-                translate([0, $powerlength, $height/2]) cylinder(r=$powerradius, h=$buttondepth, center=true);
-            }
-        }
-        
-        // camera cutout
-        color("silver") translate([$width/2-$camerapositionw, $height/2-$camerapositionh, -$depth/2]) hull(){
-            cylinder(r=$cameraradius, h=$buttondepth, center=true);
-            translate([-$camerastretch,0, 0]) cylinder(r=$cameraradius, h=$buttondepth, center=true);
+
+module buttons(
+    width = $width, height = $height, depth = $depth,
+    buttonradius = $buttonradius, buttondepth = $buttondepth,
+    powerbuttonfromcentre = $powerbuttonfromcentre, powerbuttonlength = $powerbuttonlength,
+    volclusterfromcentre = $volclusterfromcentre, volclusterlength = $volclusterlength,
+    bottomcutoutradius = $bottomcutoutradius, bottomcutoutfromcentre = $bottomcutoutfromcentre, bottomcutoutlength = $bottomcutoutlength,
+    powerradius = $powerradius, powerlength = $powerlength, powervshift = 0,
+    cameraradius = $cameraradius, camerapositionw = $camerapositionw, camerapositionh = $camerapositionh, camerastretch = $camerastretch
+) {
+    // volume cluster
+    color("silver") translate([-width/2, volclusterfromcentre, 0]) hull(){
+        rotate([0, 90, 0]){
+            cylinder(r=buttonradius, h=buttondepth, center=true);
+            translate([0, volclusterlength, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
         }
     }
+
+    // power button
+    color("silver") translate([width/2, powerbuttonfromcentre, 0]) hull(){
+        rotate([0, 90, 0]){
+            cylinder(r=buttonradius, h=buttondepth, center=true);
+            translate([0, powerbuttonlength, 0]) cylinder(r=buttonradius, h=buttondepth, center=true);
+        }
+    }
+    
+    // bottom long cutout left
+    color("black") hull(){
+        rotate([90, 90, 0]){
+            translate([0, -bottomcutoutfromcentre, height/2]) cylinder(r=bottomcutoutradius, h=buttondepth, center=true);
+            translate([0, -bottomcutoutlength-bottomcutoutfromcentre, height/2]) cylinder(r=bottomcutoutradius, h=buttondepth, center=true);
+        }
+    }
+    
+    // bottom long cutout right
+    color("black") hull(){
+        rotate([90, 90, 0]){
+            translate([0, bottomcutoutfromcentre, height/2]) cylinder(r=bottomcutoutradius, h=buttondepth, center=true);
+            translate([0, bottomcutoutlength+bottomcutoutfromcentre, height/2]) cylinder(r=bottomcutoutradius, h=buttondepth, center=true);
+        }
+    }
+    
+    // power cutout
+    color("black") hull(){
+        rotate([90, 90, 0]){
+            translate([powervshift, -powerlength, height/2]) cylinder(r=powerradius, h=buttondepth, center=true);
+            translate([powervshift, powerlength, height/2]) cylinder(r=powerradius, h=buttondepth, center=true);
+        }
+    }
+    
+    // camera cutout
+    color("silver") translate([width/2-camerapositionw, height/2-camerapositionh, -depth/2]) hull(){
+        cylinder(r=cameraradius, h=buttondepth, center=true);
+        translate([-camerastretch,0, 0]) cylinder(r=cameraradius, h=buttondepth, center=true);
+    }
 }
+// sanity check
+if ($preview) translate([0,0,-30]) { iphone6s(); buttons(); }
+
 
 
 $casewidth = $width + $caseedge*2;
@@ -168,58 +176,7 @@ module case() {
                     translate([0,0,($depth/2)-$screendepth]) cube([$width, $height, $screendepth], center=true);
                 }
             };
-            
-            
-            $buttondepth=10;
-            $powerbuttonradius=1.5;
-            $powerradius=2.2;
-            $bottomcutoutradius=0.8;
-            
-            // volume cluster
-            color("silver") translate([-$width/2, $volclusterfromcentre, 0]) hull(){
-                rotate([0, 90, 0]){
-                    cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-                    translate([0, $volclusterlength, 0]) cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-                }
-            }
-        
-            // power button
-            color("silver") translate([$width/2, $powerbuttonfromcentre, 0]) hull(){
-                rotate([0, 90, 0]){
-                    cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-                    translate([0, $powerbuttonlength, 0]) cylinder(r=$powerbuttonradius, h=$buttondepth, center=true);
-                }
-            }
-                
-            // bottom long cutout left
-            color("black") hull(){
-                rotate([90, 90, 0]){
-                    translate([0, -$bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-                    translate([0, -$bottomcutoutlength-$bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-                }
-            }
-            
-            // bottom long cutout right
-            color("black") hull(){
-                rotate([90, 90, 0]){
-                    translate([0, $bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-                    translate([0, $bottomcutoutlength+$bottomcutoutfromcentre, $height/2]) cylinder(r=$bottomcutoutradius, h=$buttondepth, center=true);
-                }
-            }
-        
-            // power cutout
-            color("black") hull(){
-                rotate([90, 90, 0]){
-                    translate([0, -$powerlength, $height/2]) cylinder(r=$powerradius, h=$buttondepth, center=true);
-                    translate([0, $powerlength, $height/2]) cylinder(r=$powerradius, h=$buttondepth, center=true);
-                }
-            }
-
-            // camera cutout
-            translate([$width/2-$camerapositionw, $height/2-$camerapositionh, -$depth/2]) hull(){
-                cylinder(r=$cameraradius, h=$buttondepth, center=true);
-                translate([-$camerastretch,0, 0]) cylinder(r=$cameraradius, h=$buttondepth, center=true);
-            }            
+            buttons(buttondepth = 10, buttonradius = 1.5, powerradius = 2.9, powervshift = 0.5, bottomcutoutradius = 0.8);
         }
     }
 }
