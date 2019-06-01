@@ -21,9 +21,9 @@ $screendepth=0.8;
 $powerbuttonlength=10;
 $powerbuttonradius=1;
 $powerbuttondepth=1;
-$powerbuttonfromcentre=28;
+$powerbuttonfromcentre=28.5;
 
-$volclusterfromcentre=14;
+$volclusterfromcentre=16;
 $volclusterlength=36;
 
 $bottomcutoutlength=22;
@@ -32,10 +32,10 @@ $bottomcutoutradius=0.5;
 $powerlength=3;
 $powerradius=1;
 
-$camerapositionw=14;
-$camerapositionh=8.5;
+$camerapositionw=13;
+$camerapositionh=7.5;
 $cameraradius=4;
-$camerastretch=9.8;
+$camerastretch=9.7;
 
 
 // the overall outside bounding box of the main phone body
@@ -46,22 +46,25 @@ module bbox() {
 if ($preview) translate([0,0,-60]) bbox();
 
 
-// a rounded box with specified outer dimensions, and with rounded vertical and horizontal chamfers
+// a rounded box with specified outer dimensions, and with specified vertical and horizontal semicircular chamfers
 module roundedbox(width, height, depth, vradius, hradius) {
-    // a rounder corner with different horizontal end vertical diameters
+    // a rounded corner with different horizontal and vertical diameters
     module corner() {
-        // extrude the corner circle around the horizontal profile radius
+        // create a vradius circle and extrude it around hradius
         rotate_extrude(convexity=1)
-            translate([hradius-vradius, 0, 0])
-                circle(r=vradius);
+            translate([hradius-vradius, 0, 0]) circle(r=vradius);
     };
+    
+    // position the centre of each corner so that we get the total dimensions after hulling
+    innerWidth = width / 2 - hradius;
+    innerHeight = height / 2 -hradius;
     
     // the total hull encompassing the four corners
     hull() {
-        translate([+(width/2-hradius), +(height/2-hradius), 0]) corner();
-        translate([-(width/2-hradius), +(height/2-hradius), 0]) corner();
-        translate([+(width/2-hradius), -(height/2-hradius), 0]) corner();
-        translate([-(width/2-hradius), -(height/2-hradius), 0]) corner();
+        translate([+innerWidth, +innerHeight, 0]) corner();
+        translate([-innerWidth, +innerHeight, 0]) corner();
+        translate([+innerWidth, -innerHeight, 0]) corner();
+        translate([-innerWidth, -innerHeight, 0]) corner();
     };
 }
 
@@ -110,10 +113,18 @@ if ($preview) {
             }
         }
         
-        // bottom long cutout
+        // bottom long cutout left
         color("black") hull(){
             rotate([90, 90, 0]){
                 translate([0, -$bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                translate([0, -10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+            }
+        }
+        
+        // bottom long cutout right
+        color("black") hull(){
+            rotate([90, 90, 0]){
+                translate([0, 10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
                 translate([0, $bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
             }
         }
@@ -161,6 +172,7 @@ module case() {
             $powerbuttondepth=10;
             $powerbuttonradius=1.5;            
             $powerradius=2.2;
+            $bottomcutoutradius=0.8;
             
             // volume cluster
             color("silver") translate([-$width/2, $volclusterfromcentre, 0]) hull(){
@@ -177,15 +189,23 @@ module case() {
                     translate([0, $powerbuttonlength, 0]) cylinder(r=$powerbuttonradius, h=$powerbuttondepth, center=true);
                 }
             }
-            
-            // bottom long cutout
+                
+            // bottom long cutout left
             color("black") hull(){
                 rotate([90, 90, 0]){
-                translate([0, -$bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
-                translate([0, $bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                    translate([0, -$bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                    translate([0, -10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
                 }
             }
             
+            // bottom long cutout right
+            color("black") hull(){
+                rotate([90, 90, 0]){
+                    translate([0, 10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                    translate([0, $bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                }
+            }
+        
             // power cutout
             color("black") hull(){
                 rotate([90, 90, 0]){

@@ -21,9 +21,9 @@ $screendepth=0.8;
 $powerbuttonlength=10;
 $powerbuttonradius=1;
 $powerbuttondepth=1;
-$powerbuttonfromcentre=28;
+$powerbuttonfromcentre=28.5;
 
-$volclusterfromcentre=14;
+$volclusterfromcentre=16;
 $volclusterlength=36;
 
 $bottomcutoutlength=22;
@@ -32,10 +32,10 @@ $bottomcutoutradius=0.5;
 $powerlength=3;
 $powerradius=1;
 
-$camerapositionw=14;
-$camerapositionh=8.5;
+$camerapositionw=13;
+$camerapositionh=7.5;
 $cameraradius=4;
-$camerastretch=9.8;
+$camerastretch=9.7;
 
 
 // the overall outside bounding box of the main phone body
@@ -113,10 +113,18 @@ if ($preview) {
             }
         }
         
-        // bottom long cutout
+        // bottom long cutout left
         color("black") hull(){
             rotate([90, 90, 0]){
                 translate([0, -$bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                translate([0, -10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+            }
+        }
+        
+        // bottom long cutout right
+        color("black") hull(){
+            rotate([90, 90, 0]){
+                translate([0, 10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
                 translate([0, $bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
             }
         }
@@ -164,6 +172,7 @@ module case() {
             $powerbuttondepth=10;
             $powerbuttonradius=1.5;            
             $powerradius=2.2;
+            $bottomcutoutradius=0.8;
             
             // volume cluster
             color("silver") translate([-$width/2, $volclusterfromcentre, 0]) hull(){
@@ -180,15 +189,23 @@ module case() {
                     translate([0, $powerbuttonlength, 0]) cylinder(r=$powerbuttonradius, h=$powerbuttondepth, center=true);
                 }
             }
-            
-            // bottom long cutout
+                
+            // bottom long cutout left
             color("black") hull(){
                 rotate([90, 90, 0]){
-                translate([0, -$bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
-                translate([0, $bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                    translate([0, -$bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                    translate([0, -10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
                 }
             }
             
+            // bottom long cutout right
+            color("black") hull(){
+                rotate([90, 90, 0]){
+                    translate([0, 10, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                    translate([0, $bottomcutoutlength, $height/2]) cylinder(r=$bottomcutoutradius, h=$powerbuttondepth, center=true);
+                }
+            }
+        
             // power cutout
             color("black") hull(){
                 rotate([90, 90, 0]){
