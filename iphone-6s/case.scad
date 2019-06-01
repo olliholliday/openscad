@@ -164,12 +164,11 @@ module case() {
         roundedbox($casewidth, $caseheight, $casedepth, $casedepth/2, $hradius+$caseedge);
        
         translate([0,0,($casedepth-$depth)/2]) {
-            
-            intersection() {
-                iphone6sbody();
-                translate([0,0,-$screendepth]) cube([$width, $height, $depth], center=true);
-            };
-            // get screen notched area only by subtracting the other part and resizing it to screen dimensions
+
+            // subtract the phone
+            iphone6s();
+
+            // make a hole for the screen
             translate([0,0,-13]) {
                 resize([$screenwidth,$screenheight,5]) intersection() {
                     iphone6sbody();
